@@ -1,5 +1,6 @@
 
 target/
 dbt_packages/
+.DS_Store
 logs/
 dbt_internal_packages/

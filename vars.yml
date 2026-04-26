@@ -1,0 +1,69 @@
+vars:
+  employee_status_values:
+    - Active
+    - Future Start
+    - Voluntarily Terminated
+    - Leave of Absence
+    - Terminated for Cause
+    
+  employee_type_values:
+    - Contract
+    - Full-Time
+    - Part-Time
+
+  pay_zone_values:
+    - Zone A
+    - Zone B
+    - Zone C
+
+  employee_classification_type_values:
+    - Temporary
+    - Full-Time
+    - Part-Time
+
+  department_type_values:
+    - Production
+    - Sales
+    - IT/IS
+    - Executive Office
+    - Software Engineering
+    - Admin Offices
+
+  race_desc_values:
+    - White
+    - Hispanic
+    - Other
+    - Black
+    - Asian
+
+  marital_desc_values:
+    - Widowed
+    - Single
+    - Married
+    - Divorced
+
+  performance_score_values:
+    - Fully Meets
+    - Exceeds
+    - Needs Improvement
+    - PIP
+
+  application_status_values:
+    - Interviewing
+    - Rejected
+    - In Review
+    - Offered
+    - Applied
+
+  training_program_name_values:
+    - Customer Service
+    - Leadership Development
+    - Technical Skills
+    - Communication Skills
+    - Project Management
+
+  training_outcome_values:
+    - Failed
+    - Incomplete
+    - Completed
+    - Passed

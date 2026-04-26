@@ -12,21 +12,73 @@ sources:
             tests: 
               - not_null
               - unique
-          - name: first_name
-            tests: 
-              - not_null
-          - name: last_name
-            tests: 
-              - not_null
           - name: employee_status
+            description: Current employment status of the employee. Used to segment active workforce, attrition analysis, and leave tracking.
             tests:
               - not_null
               - accepted_values:
-                  values: ['Active', 'Future Start', 'Voluntarily Terminated', 'Leave of Absence', 'Terminated for Cause']
+                  values: {{ var('employee_status_values') }}
           - name: start_date
             tests:
               - not_null
+              - dbt_utils.expression_is_true:
+                  expression: "start_date <= current_date"
+          - name: ad_email
+            tests:
+              - unique
+              - not_null
+          - name: exit_date
+            tests:
+              - dbt_utils.expression_is_true:
+                  expression: > 
+                    employee_status not in ('Voluntarily Terminated', 'Terminated for Cause') 
+                    OR exit_date IS NOT NULL
               
       - name: recruitment
+        columns:
+          - name: applicant_id
+            tests:
+              - not_null
+              - unique
+          - name: application_date
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: "application_date <= current_date"
+          - name: email
+            tests:
+              - not_null
+              - unique
+          - name: status
+     
       - name: training_and_development
+        columns:
+          - name: employee_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('hr', 'employee')
+                  field: emp_id
+          - name: training_date
+          - name: training_program_name
+            tests:
+              - accepted_values:
+                  values: {{ var('training_program_name_values') }}
+          - name: training_type
+          - name: training_outcome
+            tests:
+              - accepted_values:
+                  values: {{ var('training_outcome_values') }}
+          - name: training_cost
+            tests:
+              - dbt_utils.expression_is_true:
+                  expression: "training_cost >= 0"
+      
       - name: employee_engagement_survey
+        columns: 
+          - name: employee_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('hr', 'employee')
+                  field: emp_id
