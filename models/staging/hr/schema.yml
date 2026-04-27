@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_hr__employee
+    columns:
+      - name: employee_id
+        tests: [not_null, unique]
+
+      - name: employee_status
+        tests:
+          - accepted_values:
+              values: {{ var('employee_status_values') }}
+  
+  - name: stg_hr__recruitment
+    columns:
+      - name: applicant_id
+        tests: [not_null, unique]
+      - name: application_date
+        tests:
+          - not_null
