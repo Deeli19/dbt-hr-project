@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_employee
+    description: Core employee dimension table.
+
+    columns:
+      - name: employee_id
+        tests: [not_null, unique]

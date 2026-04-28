@@ -25,6 +25,7 @@ renamed as (
 
         -- categorical
         employee_status,
+        gender_code,
 
         -- metadata
         current_timestamp as _loaded_at

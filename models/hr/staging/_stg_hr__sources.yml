@@ -17,7 +17,7 @@ sources:
             tests:
               - not_null
               - accepted_values:
-                  values: {{ var('employee_status_values') }}
+                  values: "{{ var('employee_status_values') }}"
           - name: start_date
             tests:
               - not_null
@@ -63,12 +63,12 @@ sources:
           - name: training_program_name
             tests:
               - accepted_values:
-                  values: {{ var('training_program_name_values') }}
+                  values: "{{ var('training_program_name_values') }}"
           - name: training_type
           - name: training_outcome
             tests:
               - accepted_values:
-                  values: {{ var('training_outcome_values') }}
+                  values: "{{ var('training_outcome_values') }}"
           - name: training_cost
             tests:
               - dbt_utils.expression_is_true:

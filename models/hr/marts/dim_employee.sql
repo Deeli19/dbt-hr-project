@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 with employee as (
 
     select *

@@ -9,7 +9,7 @@ models:
       - name: employee_status
         tests:
           - accepted_values:
-              values: {{ var('employee_status_values') }}
+              values: "{{ var('employee_status_values') }}"
   
   - name: stg_hr__recruitment
     columns:
