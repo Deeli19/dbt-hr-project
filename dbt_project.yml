@@ -36,13 +36,18 @@ seeds:
 
 models:
   dbt_hr_project:
-    +schema: dbt_agbadeyan
-    staging:
-      +materialized: view
+    hr:
+      +schema: dbt_agbadeyan
+      staging:
+        +materialized: view
 
-    marts:
-      +materialized: table
+      marts:
+        +materialized: table
 
+snapshots:
+  dbt_hr_project:
+    +target_database: analytics
+    +target_schema: snapshots
 
 vars:
   employee_status_values:

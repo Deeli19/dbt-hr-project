@@ -2,8 +2,32 @@ version: 2
 
 models:
   - name: dim_employee
-    description: Core employee dimension table.
+    description: Core employee dimension table. One record per employee
 
     columns:
       - name: employee_id
         tests: [not_null, unique]
+
+  - name: dim_date
+    description: Calendar date dimension used across HR fact models.
+
+    columns:
+      - name: date_key
+        tests:
+          - not_null
+          - unique
+
+      - name: calendar_date
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_recruitment
+    description: grain 1 row per applicant application
+
+    columns:
+      - name: application_date
+        tests:
+          - relationships:
+              to: ref('dim_date')
+              field: calendar_date

@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: hr_kpi_summary
+    description: Aggregated HR workforce, recruitment, training, and engagement KPIs.

@@ -24,6 +24,8 @@ renamed as (
 
         -- categorical
         status as application_status,
+        job_title,
+        years_of_experience,
 
         -- numerical
         desired_salary,

@@ -11,21 +11,59 @@ renamed as (
         -- primary key
         emp_id as employee_id,
 
-        -- text fields
+        -- identity
         lower(trim(first_name)) as first_name,
         lower(trim(last_name)) as last_name,
-
-        -- emails
         lower(trim(ad_email)) as email,
+
+        -- employment attributes
+        employee_status,
+        employee_type,
+        employee_classification_type,
 
         -- dates
         {{ parse_date('start_date', 'DD-MON-YY') }} as start_date,
         {{ parse_date('exit_date', 'DD-MON-YY') }} as exit_date,
-        {{ parse_date('dob', 'DD-MON-YY') }} as date_of_birth,
 
-        -- categorical
-        employee_status,
+        -- org structure
+        business_unit,
+        department_type,
+        division,
+        location_code,
+        state,
+
+        -- role
+        title,
+        job_function_description,
+        supervisor,
+
+        -- demographics
+        {{ parse_date('dob', 'DD-MON-YY') }} as date_of_birth,
         gender_code,
+        race_desc,
+        marital_desc,
+
+        -- performance
+        performance_score,
+        current_employee_rating,
+
+        -- derived flags
+        case
+            when lower(employee_status) like '%terminate%' then 'terminated'
+            when lower(employee_status) like '%active%' then 'active'
+            when lower(employee_status) like '%leave%' then 'leave'
+            else 'other'
+        end as employee_status_group,
+
+        case
+            when exit_date is null then true
+            when employee_status = 'Future Start' then false
+            else false
+        end as is_current_employee,
+
+        case
+            when employee_status_group = 'terminated' then 1 else 0
+        end as is_terminated,
 
         -- metadata
         current_timestamp as _loaded_at

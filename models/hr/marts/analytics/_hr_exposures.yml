@@ -1,0 +1,24 @@
+version: 2
+
+exposures:
+
+  - name: hr_executive_dashboard
+    label: HR Executive Dashboard
+    type: dashboard
+    maturity: high
+
+    url: https://company-bi-tool.com/hr-dashboard
+
+    description: |
+      Executive HR dashboard tracking workforce, hiring,
+      attrition, engagement, and training KPIs.
+
+    depends_on:
+      - ref('hr_kpi_summary')
+      - ref('monthly_hiring_kpis')
+      - ref('monthly_workforce_kpis')
+      - ref('employee_attrition_analysis')
+
+    owner:
+      name: Analytics Engineering
+      email: analytics@company.com
