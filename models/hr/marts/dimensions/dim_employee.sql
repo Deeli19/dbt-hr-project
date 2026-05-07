@@ -1,3 +1,5 @@
+-- Grain: 1 row per source employee record
+
 with employee as (
 
     select *
@@ -9,39 +11,77 @@ employee_identity as (
 
     select *
     from {{ ref('int_employee_identity') }}
+
+),
+
+employee_enriched as (
+
+    select
+        -- primary key
+        e.employee_id as employee_id,
+        ei.canonical_employee_id,
+
+        -- identity
+        concat(e.first_name, ' ', e.last_name) as employee_full_name,
+        e.email as employee_email,
+
+        -- demographics
+        e.date_of_birth,
+        e.gender_code,
+
+        -- org structure
+        e.department_type,
+        e.business_unit,
+        e.division,
+
+        -- employment info
+        e.employee_status_group,
+        e.employment_start_date,
+        e.employment_exit_date,
+        e.is_active_employee,
+        e.is_terminated_employee
+
+    from employee e
+    inner join employee_identity ei
+        on e.employee_id = ei.employee_id
+
+),
+
+employment_metrics as (
+
+    select
+        *,
+
+        -- counts number of employment records tied to the same canonical employee identity
+        count(*) over (
+            partition by canonical_employee_id
+        ) as employment_record_count,
+
+        -- employee tenure in days
+        datediff(
+            'day',
+            employment_start_date,
+            coalesce(employment_exit_date, current_date)
+        ) as tenure_days
+
+    from employee_enriched
+
 ),
 
 final as (
 
     select
-        -- primary key
-        employee_id,
-        --canonical_employee_id
+        *,
 
-        -- identity
-        concat(first_name, ' ', last_name) as full_name,
-        email,
+        -- heuristic rehire flag. Assumes multiple employee records means rehire. Often true but not always.
+        case
+            when employment_record_count > 1 then true
+            else false
+        end as is_rehire
 
-        -- demographics
-        date_of_birth,
-        gender_code,
-
-        -- employment info
-        employee_status_group,
-        start_date,
-        exit_date,
-        is_current_employee,
-        is_terminated,
-
-        -- tenure (simple version)
-        --count(*) over (partition by canonical_employee_id) as employment_record_count,
-        --case when employment_record_count > 1 then 1 else 0 end as is_rehire
-        datediff('day', start_date, coalesce(exit_date, current_date)) as tenure_days
-
-    from employee e
-    join employee_identity ei
-        on e.employee_id = ei.employee_id
+    from employment_metrics
 
 )
 
-select * from final
+select *
+from final

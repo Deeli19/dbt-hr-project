@@ -1,3 +1,8 @@
+-- Grain: 1 row per source employee record
+
+-- Purpose:
+-- Enrich employee records with canonical identity attributes
+
 with employee as (
 
     select *

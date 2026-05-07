@@ -28,10 +28,10 @@ employee_kpis as (
 
         count(*) as total_employees,
 
-        sum(case when is_current_employee then 1 else 0 end)
+        sum(case when is_active_employee then 1 else 0 end)
             as active_employees,
 
-        sum(case when is_terminated = 1 then 1 else 0 end)
+        sum(case when is_terminated_employee = 1 then 1 else 0 end)
             as terminated_employees
 
     from employee

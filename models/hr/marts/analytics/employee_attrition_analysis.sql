@@ -10,7 +10,7 @@ terminated_employees as (
 
     from employee
 
-    where is_terminated = 1
+    where is_terminated_employee = 1
 
 ),
 
@@ -20,15 +20,14 @@ final as (
 
         division,
         department_type,
-        termination_type,
 
         count(*) as terminated_employee_count,
 
-        avg(tenure_years) as avg_tenure_before_exit
+        round(avg(tenure_days), 0) as avg_tenure_before_exit
 
     from terminated_employees
 
-    group by 1, 2, 3
+    group by 1, 2
 
 )
 

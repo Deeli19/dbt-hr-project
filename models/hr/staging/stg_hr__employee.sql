@@ -22,8 +22,8 @@ renamed as (
         employee_classification_type,
 
         -- dates
-        {{ parse_date('start_date', 'DD-MON-YY') }} as start_date,
-        {{ parse_date('exit_date', 'DD-MON-YY') }} as exit_date,
+        {{ parse_date('start_date', 'DD-MON-YY') }} as employment_start_date,
+        {{ parse_date('exit_date', 'DD-MON-YY') }} as employment_exit_date,
 
         -- org structure
         business_unit,
@@ -59,11 +59,11 @@ renamed as (
             when exit_date is null then true
             when employee_status = 'Future Start' then false
             else false
-        end as is_current_employee,
+        end as is_active_employee,
 
         case
             when employee_status_group = 'terminated' then 1 else 0
-        end as is_terminated,
+        end as is_terminated_employee,
 
         -- metadata
         current_timestamp as _loaded_at

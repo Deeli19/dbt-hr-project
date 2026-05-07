@@ -8,8 +8,8 @@ employee_start_months as (
 
     select
 
-        extract(year from start_date) as year,
-        extract(month from start_date) as month,
+        extract(year from employment_start_date) as year,
+        extract(month from employment_start_date) as month,
 
         count(*) as hires
 
@@ -23,14 +23,14 @@ employee_exit_months as (
 
     select
 
-        extract(year from exit_date) as year,
-        extract(month from exit_date) as month,
+        extract(year from employment_exit_date) as year,
+        extract(month from employment_exit_date) as month,
 
         count(*) as terminations
 
     from employee
 
-    where exit_date is not null
+    where employment_exit_date is not null
 
     group by 1, 2
 

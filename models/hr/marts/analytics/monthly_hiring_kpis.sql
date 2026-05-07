@@ -14,8 +14,8 @@ final as (
 
     select
 
-        application_year,
-        application_month,
+        year_number as application_year,
+        month_name as application_month,
 
         count(*) as total_applications,
 
