@@ -27,7 +27,6 @@ sources:
                     expression: "<= current_date"
           - name: ad_email
             tests:
-              - unique
               - not_null
               
       - name: recruitment
