@@ -53,6 +53,7 @@ jobs:
                 threads: 4
                 authenticator: snowflake
                 private_key_path: /home/runner/.dbt/rsa_key.p8
+                private_key_passphrase: "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}"
           EOF
 
           ls -la /home/runner/.dbt
