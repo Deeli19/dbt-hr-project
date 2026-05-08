@@ -29,8 +29,14 @@ jobs:
         run: |
           dbt deps
 
-      - name: Create dbt profiles.yml
+      - name: Setup dbt profile and Snowflake key
         run: |
+          mkdir -p /home/runner/.dbt
+
+          printf '%s' "${{ secrets.SNOWFLAKE_PRIVATE_KEY }}" > /home/runner/.dbt/rsa_key.p8
+
+          chmod 600 /home/runner/.dbt/rsa_key.p8
+
           cat > /home/runner/.dbt/profiles.yml <<EOF
           default:
             target: dev
@@ -48,6 +54,8 @@ jobs:
                 authenticator: snowflake
                 private_key_path: /home/runner/.dbt/rsa_key.p8
           EOF
+
+          ls -la /home/runner/.dbt
 
       - name: Validate project (parse)
         run: |
