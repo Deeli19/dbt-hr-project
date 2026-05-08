@@ -28,22 +28,25 @@ jobs:
       - name: Install dependencies
         run: |
           dbt deps
-
-      - name: Create dbt profiles.yml
+      - name: Create Snowflake private key
         run: |
-          mkdir -p ~/.dbt
+          mkdir -p /home/runner/.dbt
 
-          cat <<EOF > ~/.dbt/profiles.yml
+          printf '%s' "${{ secrets.SNOWFLAKE_PRIVATE_KEY }}" > /home/runner/.dbt/rsa_key.p8
+
+          chmod 600 /home/runner/.dbt/rsa_key.p8
+
+          ls -la /home/runner/.dbt
           default:
             target: dev
             outputs:
               dev:
                 type: snowflake
                 account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+                database: ${{ secrets.SNOWFLAKE_DATABASE }}
                 user: ${{ secrets.SNOWFLAKE_USER }}
                 role: ${{ secrets.SNOWFLAKE_ROLE }}
                 warehouse: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
-                database: ${{ secrets.SNOWFLAKE_DATABASE }}
                 schema: ${{ secrets.SNOWFLAKE_SCHEMA }}
                 threads: 4
                 private_key_path: /home/runner/.dbt/rsa_key.p8
