@@ -98,11 +98,23 @@ These answer real business questions around hiring, retention, and workforce tre
 
 ---
 
-## Incremental & Performance Optimization
+## Incremental Modeling Strategy & Performance Optimization
 
-* Implemented incremental model for recruitment fact table
+* Implemented incremental model for recruitment fact table.
+to simulate production-scale analytics engineering practices
 * Reduced full table rebuilds
 * Designed for scalability as data volume grows
+
+### Design Decisions
+- Snowflake merge strategy used for idempotent loads
+- 3-day lookback window handles late-arriving records
+- Incremental filtering based on application_date timestamps
+- Tests ensure uniqueness and referential integrity
+
+### Tradeoffs
+Incremental models improve runtime and reduce compute
+costs but increase pipeline complexity and require
+careful state management.
 
 ---
 

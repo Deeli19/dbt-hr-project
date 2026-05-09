@@ -22,12 +22,28 @@ models:
           - not_null
           - unique
 
-  - name: fct_recruitment
-    description: grain 1 row per applicant application
+  - name: fct_recruitment_incremental
+    description: 
+      Grain 1 row per applicant application. 
+      Incremental fact model capturing recruitment lifecycle events.
+      This model was implemented as incremental to reduce warehouse
+      compute costs and improve pipeline runtime as employee event
+      volumes scale.
 
+      A 3-day lookback window is used to capture late-arriving records.
+      The model uses Snowflake merge strategy to support updates to
+      existing employee event records.
+      Assumptions
+      - application_date is reliably populated by the source system
+      - applicant_id is unique across all source loads
+      - late-arriving records typically arrive within 3 days
     columns:
+      - name: applicant_id
+        description: Unique identifier for each applicant
+        tests: [not_null, unique]
       - name: application_date
         tests:
           - relationships:
-              to: ref('dim_date')
-              field: calendar_date
+              arguments:
+                to: ref('dim_date')
+                field: calendar_date
