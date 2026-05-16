@@ -2,8 +2,8 @@
 
 with employee as (
 
-    select *
-    from {{ ref('stg_hr__employee') }}
+    select * from {{ ref('employee_snapshot') }}
+    where dbt_valid_to is null
 
 ),
 
@@ -58,11 +58,7 @@ employment_metrics as (
         ) as employment_record_count,
 
         -- employee tenure in days
-        datediff(
-            'day',
-            employment_start_date,
-            coalesce(employment_exit_date, current_date)
-        ) as tenure_days
+        {{calculate_tenure_days('employment_start_date', 'employment_exit_date') }} as tenure_days
 
     from employee_enriched
 
@@ -83,5 +79,4 @@ final as (
 
 )
 
-select *
-from final
+select * from final

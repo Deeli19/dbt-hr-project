@@ -2,23 +2,33 @@ version: 2
 
 exposures:
 
-  - name: hr_executive_dashboard
-    label: HR Executive Dashboard
+  - name: workforce_headcount_dashboard
+
     type: dashboard
-    maturity: high
+    maturity: medium
 
-    url: https://company-bi-tool.com/hr-dashboard
-
-    description: |
-      Executive HR dashboard tracking workforce, hiring,
-      attrition, engagement, and training KPIs.
-
-    depends_on:
-      - ref('hr_kpi_summary')
-      - ref('monthly_hiring_kpis')
-      - ref('monthly_workforce_kpis')
-      - ref('employee_attrition_analysis')
+    url: https://company-bi-tool/workforce-headcount-dashboard
 
     owner:
-      name: Analytics Engineering
-      email: analytics@company.com
+      name: Workforce Analytics Team
+      email: workforce_analytics@company.com
+
+    depends_on:
+      - ref('dim_employee_current')
+      - ref('fct_employee_history')
+
+    config:
+      meta:
+        owner_team: workforce_analytics
+        domain: hr
+        pii_contains_sensitive_employee_data: false
+
+      tags:
+        - hr
+        - workforce
+        - executive_reporting
+
+    description: >
+      Executive workforce dashboard used to monitor historical headcount,
+      employee movement, organizational changes, and workforce trends
+      across departments and divisions.

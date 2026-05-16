@@ -1,6 +1,6 @@
 with employee as (
 
-    select * from {{ ref('dim_employee') }}
+    select * from {{ ref('dim_employee_current') }}
 
 ),
 

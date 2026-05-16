@@ -7,8 +7,21 @@ sources:
 
     tables:
       - name: employee
+        config:
+          freshness:
+            warn_after: {count: 24, period: hour}
+            error_after: {count: 48, period: hour}
+
+          loaded_at_field: _loaded_at
+
+        description: >
+          Raw employee workforce extract sourced from the HRIS system.
+          Contains employee demographic, organizational, and employment attributes.
+          Data is refreshed daily through scheduled ingestion pipelines.
+
         columns:
           - name: emp_id
+            description: Unique identifier for each employee.
             tests: 
               - not_null
               - unique

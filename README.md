@@ -62,11 +62,18 @@ CI/CD (GitHub Actions)
 ### 2. Slowly Changing Dimensions (SCD2)
 
 * Implemented using dbt snapshots
+The source employee dataset does not currently contain a reliable
+updated_at column. Therefore, dbt snapshot check strategy was used
+to detect historical attribute changes.
+
+In a production environment, a timestamp-based strategy would
+generally be preferred for scalability and maintainability.
 * Tracks changes in:
 
   * employee_status
   * title
   * division
+  * department_type
   * supervisor
 * Supports point-in-time reporting
 

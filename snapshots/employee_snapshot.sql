@@ -1,4 +1,4 @@
-{% snapshot snap_employee %}
+{% snapshot employee_snapshot %}
 
 {{
     config(
