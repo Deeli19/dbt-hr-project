@@ -1,24 +1,24 @@
 with employee as (
 
-    select * from {{ ref('int_employee_current_state') }}
+    select * from {{ ref('int_filtered_to_current_state') }}
 
 ),
 
 recruitment as (
 
-    select * from {{ ref('fct_recruitment') }}
+    select * from {{ ref('fct_recruitments') }}
 
 ),
 
 training as (
 
-    select * from {{ ref('fct_training') }}
+    select * from {{ ref('fct_trainings') }}
 
 ),
 
 engagement as (
 
-    select * from {{ ref('fct_engagement_survey') }}
+    select * from {{ ref('fct_survey_results') }}
 
 ),
 
@@ -44,7 +44,7 @@ recruitment_kpis as (
 
         count(*) as total_applications,
 
-        sum(case when is_hired = 1 then 1 else 0 end) as total_hires,
+        sum(case when hired_flag = 1 then 1 else 0 end) as total_hires,
 
         avg(desired_salary) as avg_desired_salary
 

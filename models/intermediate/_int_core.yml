@@ -2,7 +2,7 @@ version: 2
 
 models:
 
-  - name: int_employee_status_changes
+  - name: int_state_history_preserved
 
     description: >
       Historical employee workforce fact table capturing employee attribute
@@ -84,7 +84,7 @@ models:
           Array of workforce attribute transition types that occurred between historical employee records.
           Captures all detected changes in employee status, title, division, and supervisor to provide a comprehensive view of workforce movements and state transitions, including multiple simultaneous attribute changes during state transitions.
 
-  - name: int_employee_current
+  - name: int_filtered_to_current_state
 
     description: >
       Current-state employee dimension table containing one active record
@@ -120,44 +120,6 @@ models:
 
       - name: canonical_employee_id
         data_type: varchar
-        description: Canonical employee identity used to group rehires and multiple employment records.
-
-      - name: employee_full_name
-        data_type: varchar
-        description: Concatenated employee first and last name.
-
-      - name: employee_email
-        data_type: varchar
-        description: Employee corporate email address.
+        description: Standardized identifier for each employee, resolved across multiple HR systems to ensure a single canonical identity.
         tests:
-          - not_null:
-              config:
-                severity: warn
-
-      - name: employee_status_group
-        data_type: varchar
-        description: Current workforce employment status grouping.
-
-      - name: division
-        data_type: varchar
-        description: Current employee organizational division.
-
-      - name: department_type
-        data_type: varchar
-        description: Current employee department classification.
-
-      - name: employment_start_date
-        data_type: date
-        description: Employee hire/start date.
-
-      - name: employment_exit_date
-        data_type: date
-        description: Employee termination or exit date if applicable.
-
-      - name: is_active_employee
-        data_type: boolean
-        description: Indicates whether employee is currently active.
-
-      - name: is_rehire
-        data_type: boolean
-        description: Heuristic flag identifying employees with multiple employment records.
+          - not_null

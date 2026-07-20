@@ -4,7 +4,7 @@ with employee_changes as (
 
     select *
 
-    from {{ ref('int_employee_state_changes') }}
+    from {{ ref('int_state_history_preserved') }}
 
 ),
 
@@ -213,6 +213,4 @@ final as (
 
 )
 
-select *
-
-from final
+select * from final

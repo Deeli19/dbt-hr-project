@@ -1,6 +1,6 @@
 with training as (
 
-    select * from {{ ref('stg_hr__training') }}
+    select * from {{ ref('stg_hr__trainings') }}
 
 ),
 

@@ -1,6 +1,7 @@
 with employee as (
 
-    select * from {{ ref('dim_active_employees') }}
+    select * from {{ ref('int_filtered_to_current_state') }}
+    where is_active_employee = true
 
 ),
 
