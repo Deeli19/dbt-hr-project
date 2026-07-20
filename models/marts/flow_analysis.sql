@@ -1,6 +1,6 @@
 with employee as (
 
-    select * from {{ ref('int_filtered_to_current_state') }}
+    select * from {{ ref('fct_employee_monthly_archives') }}
     where is_active_employee = true
 
 ),

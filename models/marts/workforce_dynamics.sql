@@ -3,7 +3,7 @@
 with employee as (
 
     select *
-    from {{ ref('int_filtered_to_current_state') }}
+    from {{ ref('fct_employee_events') }}
 
 ),
 

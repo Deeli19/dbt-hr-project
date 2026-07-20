@@ -42,14 +42,17 @@ with employee_changes as (
 
 ),
 
-initial_hire_events as (
+
+employee_change_events as (
+
+    {% for attr in tracked_attributes %}
 
     select
 
         {{ dbt_utils.generate_surrogate_key([
             'employee_id',
             'effective_start_date',
-            "'hire_event'"
+            'employee_history_id'
         ]) }} as employee_event_id,
 
         employee_id,
@@ -58,44 +61,16 @@ initial_hire_events as (
         effective_start_date as event_timestamp,
         cast(effective_start_date as date) as event_date,
 
-        'hire_event' as event_type,
-
-        null as previous_value,
-        employee_status as new_value,
-
-        'employee_status' as changed_attribute
-
-    from employee_changes
-
-    where previous_employee_status is null
-
-),
-
-employee_status_events as (
-
-    select
-
-        {{ dbt_utils.generate_surrogate_key([
-            'employee_id',
-            'effective_start_date',
-            "'" ~ attr.event_type ~ "'"
-        ]) }} as employee_event_id,
-
-        employee_id,
-        employee_history_id,
-
-        effective_start_date as event_timestamp,
-        cast(effective_start_date as date) as event_date,
-
-        '{{ attr.event_type }}' as event_type,
+        case 
+            when {{attr.previous}} is null then 'initial_value' 
+                else '{{ attr.attribute }}' 
+            end as event_type,
 
         {{ attr.previous }} as previous_value,
-        {{ attr.current }} as new_value,
-
-        '{{ attr.attribute }}' as changed_attribute
+        {{ attr.current }} as current_value
 
     from employee_changes
-
+    
     where coalesce({{ attr.previous }}, 'unknown')
         != coalesce({{ attr.current }}, 'unknown')
 
@@ -107,4 +82,4 @@ employee_status_events as (
 
 )
 
-select * from final
+select * from employee_change_events
