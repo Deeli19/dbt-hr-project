@@ -10,7 +10,7 @@ with employee_history as (
             order by effective_start_date
         ) as previous_effective_end_date
 
-    from {{ ref('int_employee_state_changes') }}
+    from {{ ref('int_state_history_preserved') }}
 
 ),
 

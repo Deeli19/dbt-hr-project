@@ -17,7 +17,7 @@ with employee_data as (
     select 
         *,
         cast('{{ archive_date }}' as date) as archive_date
-    from {{ ref('int_employee_identity') }}
+    from {{ ref('int_filtered_to_current_state') }}
 ),
 
 rows_to_archive as (

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_hr__employee
+  - name: stg_hr__employees
     columns:
       - name: employee_id
         tests: [not_null, unique]
@@ -12,7 +12,7 @@ models:
               arguments:
                 values: "{{ var('employee_status_values') }}"
   
-  - name: stg_hr__recruitment
+  - name: stg_hr__recruitments
     columns:
       - name: applicant_id
         tests: [not_null, unique]

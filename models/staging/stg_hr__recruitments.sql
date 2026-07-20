@@ -30,6 +30,16 @@ renamed as (
         -- numerical
         desired_salary,
 
+        case
+            when application_status = 'Offered' then true
+            else false
+        end as is_hired,
+
+        case
+            when application_status = 'Offered' then 1
+            else 0
+        end as hired_flag,
+        
         -- metadata
         current_timestamp as _loaded_at
 

@@ -1,6 +1,6 @@
 with survey as (
 
-    select * from {{ ref('stg_hr__engagement') }}
+    select * from {{ ref('stg_hr__survey_results') }}
 
 ),
 

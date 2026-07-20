@@ -5,8 +5,25 @@ models:
   - name: fct_employee_events
     description: Employee lifecycle events
 
-  - name: fct_employee_workforce_monthly
-    description: Monthly workforce metrics
+  - name: fct_employee_monthly_archives
+    description: Monthly snapshots of employee workforce data
+  
+  - name: flow_analysis
+    description: >
+      Monthly snapshot of employee workforce data, capturing key metrics
+      such as headcount, hires, and terminations.
+
+  - name: hiring_analysis
+    description: >
+      Monthly hiring key performance indicators (KPIs) for workforce analytics.
+  
+  - name: attrition_analysis
+    description: >
+      Analysis of employee attrition trends, including tenure and exit reasons.
+  
+  - name: hr_kpi_summary
+    description: >
+      Summary of key HR metrics, including headcount, turnover, and diversity statistics.
 
 semantic_models:
 
@@ -42,9 +59,9 @@ semantic_models:
         agg: count
         expr: 1
 
-  - name: workforce_monthly
+  - name: workforce_dynamics
 
-    model: ref('fct_employee_workforce_monthly')
+    model: ref('flow_analysis')
 
     defaults:
       agg_time_dimension: metric_month

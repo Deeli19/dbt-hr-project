@@ -38,20 +38,40 @@ with employee_changes as (
 
     select *
 
-    from {{ ref('int_employee_state_changes') }}
-    -- consider rows where we have a previous state (ignores initial load rows)
-    where
-        previous_employee_status is not null
-        or previous_title is not null
-        or previous_division is not null
-        or previous_department_type is not null
-        or previous_supervisor is not null
+    from {{ ref('int_state_history_preserved') }}
 
 ),
 
-employee_attribute_changes as (
+initial_hire_events as (
 
-    {% for attr in tracked_attributes %}
+    select
+
+        {{ dbt_utils.generate_surrogate_key([
+            'employee_id',
+            'effective_start_date',
+            "'hire_event'"
+        ]) }} as employee_event_id,
+
+        employee_id,
+        employee_history_id,
+
+        effective_start_date as event_timestamp,
+        cast(effective_start_date as date) as event_date,
+
+        'hire_event' as event_type,
+
+        null as previous_value,
+        employee_status as new_value,
+
+        'employee_status' as changed_attribute
+
+    from employee_changes
+
+    where previous_employee_status is null
+
+),
+
+employee_status_events as (
 
     select
 
@@ -87,6 +107,4 @@ employee_attribute_changes as (
 
 )
 
-select *
-
-from employee_attribute_changes
+select * from final

@@ -3,7 +3,7 @@
     materialized='incremental',
     incremental_strategy='merge',
     unique_key='applicant_id',
-    on_schema_change='fail',
+    on_schema_change='sync_all_columns',
     cluster_by=['application_date'],
     merge_update_columns=[
         'application_status',
@@ -15,7 +15,7 @@
 
 with recruitment as (
 
-    select * from {{ ref('stg_hr__recruitment') }}
+    select * from {{ ref('stg_hr__recruitments') }}
 
     {% if is_incremental() %}
 
@@ -42,12 +42,7 @@ final as (
         job_title,
         years_of_experience,
         desired_salary,
-
-        case
-            when application_status = 'Offered' then true
-            else false
-        end as is_hired,
-        
+        hired_flag,
         current_timestamp() as dbt_updated_at,
         'dbt_incremental_merge' as record_source
 
