@@ -1,6 +1,6 @@
 with inactive_employee as (
 
-    select * from {{ ref('fct_employee_monthly_archives') }}
+    select * from {{ ref('fct_employee_monthly_archive') }}
     where is_active_employee = false
 
 ),
