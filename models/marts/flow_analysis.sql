@@ -1,7 +1,6 @@
 with employee as (
 
-    select * from {{ ref('fct_employee_monthly_archives') }}
-    where is_active_employee = true
+    select * from {{ ref('fct_employee_monthly_archive') }}
 
 ),
 
